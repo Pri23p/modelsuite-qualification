@@ -44,13 +44,19 @@ const STATUS_CLASS = {
 const TasksTable = ({ tasks, onEdit, onRefresh }) => {
 
   const handleDelete = async (id) => {
-    try {
-      await deleteTask(id);
-      onRefresh();
-    } catch {
-      alert('Failed to delete task');
-    }
-  };
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this task? This action cannot be undone."
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await deleteTask(id);
+    onRefresh();
+  } catch {
+    alert("Failed to delete task");
+  }
+};
 
   if (tasks.length === 0) {
     return (
@@ -66,8 +72,11 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse" style={{ fontSize: '13.5px' }}>
+    <div className="w-full overflow-x-auto">
+  <table
+    className="min-w-[900px] w-full border-collapse"
+    style={{ fontSize: '13.5px' }}
+  >
         <thead>
           <tr>
             <th className="table-th">Title</th>
@@ -85,7 +94,8 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
               style={{ animationDelay: `${i * 0.05}s` }}>
 
               {/* Title + description */}
-              <td className="table-td" style={{ maxWidth: '260px' }}>
+              <td className="table-td" style={{minWidth: '250px', maxWidth: '260px'
+}}>
                 <span className="block font-semibold truncate"
                   style={{ color: '#E5E2E1', fontFamily: 'Inter, sans-serif', marginBottom: '2px' }}>
                   {task.title || '—'}
@@ -137,7 +147,7 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
 
               {/* Actions */}
               <td className="table-td">
-                <div className="flex gap-1.5">
+                <div className="flex gap-1.5 whitespace-nowrap">
                   <button
                     onClick={() => onEdit(task)}
                     title="Edit task"

@@ -9,14 +9,23 @@ const REVIEW_STATUS_CLASS = {
 const SubmissionReviewModal = ({ submission, onClose, onReviewed }) => {
 
   const handleReview = async (status) => {
-    try {
-      await reviewSubmission(submission._id, status);
-      onReviewed();
-      onClose();
-    } catch (err) {
-      alert(err.response?.data?.message || 'Review action failed');
-    }
-  };
+  // Show confirmation only for Reject
+  if (status === 'Rejected') {
+    const confirmed = window.confirm(
+      'Are you sure you want to reject this submission?'
+    );
+
+    if (!confirmed) return;
+  }
+
+  try {
+    await reviewSubmission(submission._id, status);
+    onReviewed();
+    onClose();
+  } catch (err) {
+    alert(err.response?.data?.message || 'Review action failed');
+  }
+};
 
   const task   = submission.taskId   || {};
   const talent = submission.talentId || {};
