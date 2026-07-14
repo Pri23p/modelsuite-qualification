@@ -137,7 +137,6 @@ const AdminDashboard = () => {
                   placeholder="Search tasks…"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="search-input-glass"
                  className="search-input-glass w-full sm:w-[180px]"
                 />
               </div>
